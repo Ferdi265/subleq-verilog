@@ -51,7 +51,7 @@ module subleq_cpu(
         data_in_2;
 
     assign data_out = data_in_1 - a_value;
-    assign leq = !($signed(data_out) > $signed(0));
+    assign leq = !($signed(data_in_2 - a_value) > $signed(0));
     assign branch = control_word == `FETCH_C && leq;
     assign inc = fetch;
     assign set = control_word == `FETCH_B;

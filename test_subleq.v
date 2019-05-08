@@ -37,7 +37,7 @@ module test;
         end
     endtask
 
-    always @(clk) if (!$test$plusargs("autotest")) begin
+    always @(clk) if ($test$plusargs("debug")) begin
         $display("[TIME = %t] CLK = %h, ARESET = %h", $time, clk, areset);
         if (clk) begin
             $write("STATE = ");
@@ -57,10 +57,10 @@ module test;
             $display("  DIN = [%h, %h, %h], DOUT = %h", subl.cpu.data_in_0, subl.cpu.data_in_1, subl.cpu.data_in_2, subl.cpu.data_out);
             $display("  fetch = %h, deref = %h, load = %h", subl.cpu.fetch, subl.cpu.deref, subl.cpu.load);
             $display("  leq = %h, branch = %h, inc = %h, set = %h", subl.cpu.leq, subl.cpu.branch, subl.cpu.inc, subl.cpu.set);
+
+
             $display("MEMORY 0000 - 0080:");
             dump(16'h0000, 16'h007f);
-            $display("MEMORY fe00 - ffff:");
-            dump(16'hfe00, 16'hffff);
         end
     end
 endmodule

@@ -56,7 +56,7 @@ module test;
             endcase
             $display("");
             $display("INTERNALS:");
-            $display("  A = %h, PC = %h, ADDR = %h", subl.cpu.areg.a, subl.cpu.pc.addr, subl.cpu.addr);
+            $display("  A = %h, PC = %h, ADDR = %h", subl.cpu.areg.a, subl.cpu.pc_addr, subl.cpu.addr);
             $display("  DIN = [%h, %h, %h], DOUT = %h", subl.cpu.data_in_0, subl.cpu.data_in_1, subl.cpu.data_in_2, subl.cpu.data_out);
             $display("  fetch = %h, deref = %h, load = %h", subl.cpu.fetch, subl.cpu.deref, subl.cpu.load);
             $display("  leq = %h, branch = %h, inc = %h, set = %h", subl.cpu.leq, subl.cpu.branch, subl.cpu.inc, subl.cpu.set);

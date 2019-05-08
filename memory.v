@@ -34,6 +34,10 @@ module memory(
                 if (ret != 0) i = i + 1;
             end
             $fclose(fd);
+            while (i < (1 << `WORD_SIZE)) begin
+                buffer[i] = 0;
+                i = i + 1;
+            end
         end
     endtask
 

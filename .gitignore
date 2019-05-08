@@ -2,3 +2,5 @@ subleq
 input.txt
 output.txt
 memory.hex
+test/asm
+test/asm_test

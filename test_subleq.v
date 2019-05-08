@@ -16,7 +16,7 @@ module test;
 
         wait (subl.cpu.ctrl.state == `HALT);
         if ($test$plusargs("autotest")) begin
-            dump(16'hff00, 16'hff02);
+            dump(16'h000, (1 << `WORD_SIZE) - 1);
         end
         $finish;
     end

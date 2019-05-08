@@ -19,6 +19,13 @@ module io_input(
     integer fd;
     integer ret;
 
+    task read;
+        begin
+            ret = $fread(byte, fd);
+            eof = $feof(fd);
+        end
+    endtask
+
     initial begin
         eof = 0;
         if (`INTERACTIVE)
@@ -30,12 +37,10 @@ module io_input(
             $display("[ERROR] cannot read stdin");
             $finish;
         end
+        read;
     end
 
-    always @(posedge clk) if (in_read) begin
-        ret = $fread(byte, fd);
-        eof = $feof(fd);
-    end
+    always @(posedge clk) if (in_read) read;
 
     assign io_in = byte;
 endmodule

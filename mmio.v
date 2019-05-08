@@ -39,8 +39,8 @@ module mmio(
 
     assign addr_io = addr >= ((1 << `WORD_SIZE) - 3);
     assign addr_io_halt = addr == ((1 << `WORD_SIZE) - 1);
-    assign addr_io_read = addr == ((1 << `WORD_SIZE) - 2);
-    assign addr_io_write = addr == ((1 << `WORD_SIZE) - 3);
+    assign addr_io_write = addr == ((1 << `WORD_SIZE) - 2);
+    assign addr_io_read = addr == ((1 << `WORD_SIZE) - 3);
     assign addr_out = addr;
 
     assign in_read = addr_io_read && load;

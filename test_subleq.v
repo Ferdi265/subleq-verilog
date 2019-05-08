@@ -15,6 +15,9 @@ module test;
         #9
 
         wait (subl.cpu.ctrl.state == `HALT);
+        if ($test$plusargs("autotest")) begin
+            dump(16'hff00, 16'hff02);
+        end
         $finish;
     end
 
@@ -34,7 +37,7 @@ module test;
         end
     endtask
 
-    always @(clk) begin
+    always @(clk) if (!$test$plusargs("autotest")) begin
         $display("[TIME = %t] CLK = %h, ARESET = %h", $time, clk, areset);
         if (clk) begin
             $write("STATE = ");

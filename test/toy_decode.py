@@ -4,7 +4,7 @@ from random import randrange
 
 class ToyDecodeTester(LabelPreservingTester, RandomInputTester, ExpectedOutputTester):
     def __init__(self, **kwargs):
-        super().__init__(iterations = 1000, preserve = ["_ZERO", "_ONE", "N15", "inst"], **kwargs)
+        super().__init__(preserve = ["_ZERO", "_ONE", "N15", "inst"], **kwargs)
 
     def expected(self):
         inst = self.input[0]

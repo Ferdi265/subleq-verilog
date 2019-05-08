@@ -3,7 +3,7 @@ from test_hl import *
 
 class PtrTester(LabelPreservingTester, RandomInputTester, ExpectedOutputTester):
     def __init__(self, **kwargs):
-        super().__init__(inrange = (0, 16), iterations = 20, preserve = ["_ZERO", "_ONE", "POWERS", "in"], **kwargs)
+        super().__init__(inrange = (0, 16), preserve = ["_ZERO", "_ONE", "POWERS", "in"], **kwargs)
 
     def expected(self):
         return [2**self.input[0]]

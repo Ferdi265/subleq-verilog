@@ -3,7 +3,7 @@ from test_hl import *
 
 class LoopTester(LabelPreservingTester, RandomInputTester, ExpectedOutputTester):
     def __init__(self, **kwargs):
-        super().__init__(inrange = (0, 16), iterations = 20, preserve = ["_ZERO", "_ONE", "N15", "in"], **kwargs)
+        super().__init__(inrange = (0, 16), preserve = ["_ZERO", "_ONE", "N15", "in"], **kwargs)
 
     def expected(self):
         return [1]

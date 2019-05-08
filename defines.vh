@@ -8,3 +8,5 @@
 `define STORE_SUB 3'b100
 `define FETCH_C   3'b101
 `define HALT      3'b110
+
+`define INTERACTIVE ($test$plusargs("i") || $test$plusargs("interactive"))

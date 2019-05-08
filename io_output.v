@@ -12,4 +12,23 @@ module io_output(
 
     wire out_write;
     wire [`WORD_SIZE - 1 : 0] io_out;
+
+    integer fd;
+    integer ret;
+
+    initial begin
+        if (`INTERACTIVE)
+            fd = $fopen("/dev/stdout", "w");
+        else
+            fd = $fopen("output.txt", "w");
+
+        if (fd == 0) begin
+            $display("[ERROR] cannot write stdout");
+            $finish;
+        end
+    end
+
+    always @(posedge clk) if (out_write) begin
+        ret = $write(fd, "%s", io_out[7 : 0]);
+    end
 endmodule

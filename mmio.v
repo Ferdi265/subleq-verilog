@@ -1,7 +1,7 @@
 `include "defines.vh"
 
 module mmio(
-    input in_avail,
+    input eof,
     output in_read,
     output out_write,
     input [`WORD_SIZE - 1 : 0] io_in,
@@ -17,7 +17,7 @@ module mmio(
     output [`WORD_SIZE - 1 : 0] mem_in,
     output [`WORD_SIZE - 1 : 0] addr_out
 );
-    wire in_avail;
+    wire eof;
     wire in_read;
     wire out_write;
     wire [`WORD_SIZE - 1 : 0] io_in;
@@ -45,7 +45,7 @@ module mmio(
 
     assign in_read = addr_io_read && load;
     assign out_write = addr_io_write && !load;
-    assign halt = (!in_avail && in_read) || addr_io_halt;
+    assign halt = (eof && in_read) || addr_io_halt;
 
     assign mem_in = addr_io ? 0 : data_out;
     assign io_out = out_write ? data_out : 0;

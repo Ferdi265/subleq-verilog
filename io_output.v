@@ -14,7 +14,6 @@ module io_output(
     wire [`WORD_SIZE - 1 : 0] io_out;
 
     integer fd;
-    integer ret;
 
     initial begin
         if (`INTERACTIVE)
@@ -29,6 +28,6 @@ module io_output(
     end
 
     always @(posedge clk) if (out_write) begin
-        ret = $write(fd, "%s", io_out[7 : 0]);
+        $fwrite(fd, "%s", io_out[7 : 0]);
     end
 endmodule

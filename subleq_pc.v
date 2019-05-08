@@ -24,7 +24,9 @@ module subleq_pc(
         else pc <= pc + inc;
     end
 
-    always @(areset) if (areset) pc = 0;
+    always @(areset) if (areset) begin
+        pc <= 0;
+    end
 
     assign pc_out = pc;
 endmodule

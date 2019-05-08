@@ -18,13 +18,15 @@ module test;
         $finish;
     end
 
+    integer i;
+    integer j;
     task dump;
         input [`WORD_SIZE - 1 : 0] start_addr;
         input [`WORD_SIZE - 1 : 0] end_addr;
         begin
-            for (i = start_addr; i < end_addr; i = i + 16) begin
-                $write("  %04h:", i);
-                for (j = 0; j < 16 && i + j < end_addr; j = j + 1) begin
+            for (i = start_addr; i <= end_addr; i = i + 16) begin
+                $write("  %04h:", i[`WORD_SIZE - 1 : 0]);
+                for (j = 0; j < 16 && i + j <= end_addr; j = j + 1) begin
                     $write(" %04h", subl.mem.buffer[i + j]);
                 end
                 $display("");
@@ -32,13 +34,9 @@ module test;
         end
     endtask
 
-    reg [`WORD_SIZE - 1 : 0] i;
-    reg [`WORD_SIZE - 1 : 0] j;
     always @(clk) begin
         $display("[TIME = %t] CLK = %h, ARESET = %h", $time, clk, areset);
         if (clk) begin
-            $display("MEMORY:");
-            dump(0, 256);
             $write("STATE = ");
             case (subl.cpu.ctrl.state)
                 `FETCH_A: $write("FETCH_A  ");
@@ -56,6 +54,10 @@ module test;
             $display("  DIN = [%h, %h, %h], DOUT = %h", subl.cpu.data_in_0, subl.cpu.data_in_1, subl.cpu.data_in_2, subl.cpu.data_out);
             $display("  fetch = %h, deref = %h, load = %h", subl.cpu.fetch, subl.cpu.deref, subl.cpu.load);
             $display("  leq = %h, branch = %h, inc = %h, set = %h", subl.cpu.leq, subl.cpu.branch, subl.cpu.inc, subl.cpu.set);
+            $display("MEMORY 0000 - 0080:");
+            dump(16'h0000, 16'h007f);
+            $display("MEMORY fe00 - ffff:");
+            dump(16'hfe00, 16'hffff);
         end
     end
 endmodule

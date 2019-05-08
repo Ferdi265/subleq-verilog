@@ -13,10 +13,6 @@ module test;
         #1
         areset = 0;
         #9
-        areset = 1;
-        #1
-        areset = 0;
-        #9
 
         wait (subl.cpu.ctrl.state == `HALT);
         $finish;

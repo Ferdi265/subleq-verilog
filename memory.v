@@ -21,14 +21,25 @@ module memory(
 
     reg [`WORD_SIZE - 1 : 0] buffer[(1 << `WORD_SIZE) - 1 : 0];
 
-    always @(clk) if (store) buffer[addr] <= mem_in;
-
     integer i;
-    always @(areset) if (areset) begin
-        for (i = 0; i < (1 << `WORD_SIZE); i = i + 1)
-            buffer[i] = 0;
-        $readmemh("memory.hex", buffer, 0, (1 << `WORD_SIZE) - 1);
-    end
+    integer fd;
+    integer ret;
+    task reload_memory;
+        begin
+            fd = $fopen("memory.hex", "r");
+            i = 0;
+            ret = 1;
+            while (ret == 1) begin
+                ret = $fscanf(fd, "%h", buffer[i]);
+                if (ret != 0) i = i + 1;
+            end
+            $fclose(fd);
+        end
+    endtask
+
+    initial reload_memory;
+    always @(posedge areset) reload_memory;
+    always @(posedge clk) if (store) buffer[addr] <= mem_in;
 
     assign mem_out = load ? buffer[addr] : 0;
 endmodule

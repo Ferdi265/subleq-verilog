@@ -20,7 +20,7 @@ module data_in_buffer(
     reg [`WORD_SIZE - 1 : 0] data_buf_1;
     reg [`WORD_SIZE - 1 : 0] data_buf_2;
 
-    always @(clk) begin
+    always @(posedge clk) begin
         data_buf_2 <= data_buf_1;
         data_buf_1 <= data_in;
     end

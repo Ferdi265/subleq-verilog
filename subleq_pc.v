@@ -19,7 +19,7 @@ module subleq_pc(
 
     reg [`WORD_SIZE - 1 : 0] pc;
 
-    always @(clk) begin
+    always @(posedge clk) begin
         if (branch) pc <= addr;
         else pc <= pc + inc;
     end

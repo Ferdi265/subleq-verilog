@@ -26,8 +26,8 @@ module data_in_buffer(
     end
 
     always @(areset) if (areset) begin
-        data_buf_2 <= 0;
-        data_buf_1 <= 0;
+        data_buf_2 = 0;
+        data_buf_1 = 0;
     end
 
     assign data_in_0 = data_in;

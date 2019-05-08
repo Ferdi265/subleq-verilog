@@ -17,7 +17,8 @@ module a_register(
 
     reg [`WORD_SIZE - 1 : 0] a;
 
-    always @(clk) if (set) a <= in;
+    always @(posedge clk) if (set) a <= in;
+    always @(areset) if (areset) a = 0;
 
     assign out = a;
 endmodule

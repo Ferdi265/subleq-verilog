@@ -58,7 +58,7 @@ module subleq_mmio(
         !addr_io ? mem_ack :
         in_read ? in_ack :
         out_write ? out_ack :
-        0;
+        cpu_req;
     assign cpu_halt = (eof && in_read) || addr_io_halt;
     assign data_in =
         !addr_io ? mem_out :

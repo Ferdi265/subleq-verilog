@@ -29,8 +29,16 @@ module subleq_circuit(
     wire [`WORD_SIZE - 1 : 0] data_out;
     wire [`WORD_SIZE - 1 : 0] addr;
 
-    io_input in(eof, in_ack, in_req, io_in);
-    io_output out(out_ack, out_req, io_out);
+    io_input in(
+        clk, areset,
+
+        eof, in_ack, in_req, io_in
+    );
+    io_output out(
+        clk, areset,
+
+        out_ack, out_req, io_out
+    );
     memory mem(
         areset,
 

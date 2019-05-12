@@ -17,4 +17,10 @@
 `define BRANCH     12
 `define HALT       13
 
+`define IO_STATE_BITS 2
+
+`define IO_WAITREQ 0
+`define IO_DOWORK  1
+`define IO_WAITACK 2
+
 `define INTERACTIVE ($test$plusargs("i") || $test$plusargs("interactive"))

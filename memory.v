@@ -1,6 +1,7 @@
 `include "defines.vh"
 
 module memory(
+    input clk,
     input areset,
 
     output ack,
@@ -12,6 +13,23 @@ module memory(
     input [`WORD_SIZE - 1 : 0] addr
 );
     reg [`WORD_SIZE - 1 : 0] buffer[(1 << `WORD_SIZE) - 1 : 0];
+    reg [`IO_STATE_BITS - 1 : 0] state;
+    wire [`IO_STATE_BITS - 1 : 0] next_state;
+
+    initial reload_memory;
+    always @(posedge clk) state <= next_state;
+    always @(areset) if (areset) begin
+        state <= `IO_WAITREQ;
+        reload_memory;
+    end
+
+    assign next_state =
+        state == `IO_WAITREQ && req ? `IO_DOWORK :
+        state == `IO_DOWORK ? `IO_WAITACK :
+        state == `IO_WAITACK && !req ? `IO_WAITREQ :
+        state;
+
+    assign ack = state == `IO_WAITACK;
 
     integer i;
     integer fd;
@@ -33,10 +51,7 @@ module memory(
         end
     endtask
 
-    initial reload_memory;
-    always @(posedge areset) reload_memory;
-    always @(*) if (req && store) buffer[addr] <= in;
+    always @(posedge clk) if (state == `IO_DOWORK && store) buffer[addr] <= in;
 
-    assign ack = req;
-    assign out = req && load ? buffer[addr] : 0;
+    assign out = load ? buffer[addr] : 0;
 endmodule

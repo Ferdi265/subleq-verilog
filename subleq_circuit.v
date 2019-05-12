@@ -40,7 +40,7 @@ module subleq_circuit(
         out_ack, out_req, io_out
     );
     memory mem(
-        areset,
+        clk, areset,
 
         mem_ack, mem_req,
         mem_load, mem_store,

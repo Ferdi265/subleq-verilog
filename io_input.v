@@ -46,7 +46,6 @@ module io_input(
     always @(posedge clk) if (state == `IO_DOWORK) begin
         ret = $fread(byte, fd);
         eof = $feof(fd);
-        $display("[IO IN]: reading %h, eof = %h", data[7 : 0], eof);
     end
 
     assign data = byte;

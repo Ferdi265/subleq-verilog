@@ -37,7 +37,6 @@ module io_output(
     end
 
     always @(posedge clk) if (state == `IO_DOWORK) begin
-        $display("[IO OUT]: writing %h", data[7 : 0]);
         $fwrite(fd, "%s", data[7 : 0]);
     end
 endmodule

@@ -42,22 +42,49 @@ module test;
         if (clk) begin
             $write("STATE = ");
             case (subl.cpu.ctrl.state)
-                `FETCH_A: $write("FETCH_A  ");
-                `DEREF_A: $write("DEREF_A  ");
-                `FETCH_B: $write("FETCH_B  ");
-                `DEREF_B: $write("DEREF_B  ");
-                `STORE_SUB: $write("STORE_SUB");
-                `FETCH_C: $write("FETCH_C  ");
-                `HALT: $write("HALT     ");
-                default: $write("????????");
+                `FETCH_A:       $write("FETCH_A   ");
+                `WAIT_A:        $write("WAIT_A    ");
+                `DEREF_A:       $write("DEREF_A   ");
+                `WAIT_DA:       $write("WAIT_DA   ");
+                `FETCH_B:       $write("FETCH_B   ");
+                `WAIT_B:        $write("WAIT_B    ");
+                `DEREF_B:       $write("DEREF_B   ");
+                `WAIT_DB:       $write("WAIT_DB   ");
+                `STORE_SUB:     $write("STORE_SUB ");
+                `WAIT_STORE:    $write("WAIT_STORE");
+                `FETCH_C:       $write("FETCH_C   ");
+                `WAIT_C:        $write("WAIT_C    ");
+                `BRANCH:        $write("BRANCH    ");
+                `HALT:          $write("HALT      ");
+                default:        $write("??????????");
+            endcase
+            $write(", NEXT_STATE = ");
+            case (subl.cpu.ctrl.next_state)
+                `FETCH_A:       $write("FETCH_A   ");
+                `WAIT_A:        $write("WAIT_A    ");
+                `DEREF_A:       $write("DEREF_A   ");
+                `WAIT_DA:       $write("WAIT_DA   ");
+                `FETCH_B:       $write("FETCH_B   ");
+                `WAIT_B:        $write("WAIT_B    ");
+                `DEREF_B:       $write("DEREF_B   ");
+                `WAIT_DB:       $write("WAIT_DB   ");
+                `STORE_SUB:     $write("STORE_SUB ");
+                `WAIT_STORE:    $write("WAIT_STORE");
+                `FETCH_C:       $write("FETCH_C   ");
+                `WAIT_C:        $write("WAIT_C    ");
+                `BRANCH:        $write("BRANCH    ");
+                `HALT:          $write("HALT      ");
+                default:        $write("??????????");
             endcase
             $display("");
-            $display("INTERNALS:");
-            $display("  A = %h, PC = %h, ADDR = %h", subl.cpu.areg.a, subl.cpu.pc_addr, subl.cpu.addr);
-            $display("  DIN = [%h, %h, %h], DOUT = %h", subl.cpu.data_in_0, subl.cpu.data_in_1, subl.cpu.data_in_2, subl.cpu.data_out);
-            $display("  fetch = %h, deref = %h, load = %h", subl.cpu.fetch, subl.cpu.deref, subl.cpu.load);
-            $display("  leq = %h, branch = %h, inc = %h, set = %h", subl.cpu.leq, subl.cpu.branch, subl.cpu.inc, subl.cpu.set);
-
+            $display("CPU INTERNALS:");
+            $display("  A = %h, B = %h, PTR = %h, PC = %h, ADDR = %h", subl.cpu.a, subl.cpu.b, subl.cpu.ptr, subl.cpu.pc, subl.cpu.addr);
+            $display("  DIN = %h, DOUT = %h, REQ = %h, ACK = %h", subl.cpu.data_in, subl.cpu.data_out, subl.cpu.req, subl.cpu.ack);
+            $display("  load = %h, store = %h, halt = %h, leq = %h", subl.cpu.load, subl.cpu.store, subl.cpu.halt, subl.cpu.leq);
+            $display("MMIO INTERNALS:");
+            $display("  input:  REQ = %h, ACK = %h, eof = %h, data = %h", subl.in.req, subl.in.ack, subl.in.eof, subl.in.data);
+            $display("  output: REQ = %h, ACK = %h, data = %h", subl.out.req, subl.out.ack, subl.out.data);
+            $display("  memory: REQ = %h, ACK = %h, load = %h, store = %h, addr = %h, in = %h, out = %h", subl.mem.req, subl.mem.ack, subl.mem.load, subl.mem.store, subl.mem.addr, subl.mem.in, subl.mem.out);
 
             $display("MEMORY 0000 - 0080:");
             dump(16'h0000, 16'h007f);

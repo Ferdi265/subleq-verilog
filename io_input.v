@@ -1,26 +1,18 @@
 `include "defines.vh"
 
 module io_input(
-    input clk,
-    input areset,
-
     output reg eof,
-    input in_read,
-    output [`WORD_SIZE - 1 : 0] io_in
+    output reg ack,
+    input req,
+    output [`WORD_SIZE - 1 : 0] data
 );
     reg [7 : 0] byte;
     integer fd;
     integer ret;
 
-    task read;
-        begin
-            ret = $fread(byte, fd);
-            eof = $feof(fd);
-        end
-    endtask
-
     initial begin
         eof = 0;
+        ack = 0;
         if (`INTERACTIVE)
             fd = $fopen("/dev/stdin", "r");
         else
@@ -30,10 +22,16 @@ module io_input(
             $display("[ERROR] cannot read stdin");
             $finish;
         end
-        read;
+
+        while (1) begin
+            wait (req);
+            ret = $fread(byte, fd);
+            eof = $feof(fd);
+            ack = 1;
+            wait (!req);
+            ack = 0;
+        end
     end
 
-    always @(posedge clk) if (in_read) read;
-
-    assign io_in = byte;
+    assign data = byte;
 endmodule

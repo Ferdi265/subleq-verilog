@@ -1,11 +1,9 @@
 `include "defines.vh"
 
 module io_output(
-    input clk,
-    input areset,
-
-    input out_write,
-    input [`WORD_SIZE - 1 : 0] io_out
+    output ack,
+    input req,
+    input [`WORD_SIZE - 1 : 0] data
 );
     integer fd;
 
@@ -21,7 +19,6 @@ module io_output(
         end
     end
 
-    always @(posedge clk) if (out_write) begin
-        $fwrite(fd, "%s", io_out[7 : 0]);
-    end
+    always @(posedge req) $fwrite(fd, "%s", data[7 : 0]);
+    assign ack = req;
 endmodule

@@ -4,46 +4,80 @@ module subleq_cpu(
     input clk,
     input areset,
 
+    input ack,
+    output req,
     input halt,
     output load,
-    input [`WORD_SIZE - 1 : 0] data_in,
-    output [`WORD_SIZE - 1 : 0] data_out,
+    output store,
+    input signed [`WORD_SIZE - 1 : 0] data_in,
+    output signed [`WORD_SIZE - 1 : 0] data_out,
     output [`WORD_SIZE - 1 : 0] addr
 );
-    wire [`WORD_SIZE - 1 : 0] data_in_0;
-    wire [`WORD_SIZE - 1 : 0] data_in_1;
-    wire [`WORD_SIZE - 1 : 0] data_in_2;
-    wire [`WORD_SIZE - 1 : 0] pc_addr;
-    wire [`WORD_SIZE - 1 : 0] a_value;
+    reg signed [`WORD_SIZE - 1 : 0] a;
+    reg signed [`WORD_SIZE - 1 : 0] b;
+    reg [`WORD_SIZE - 1 : 0] ptr;
+    reg [`WORD_SIZE - 1 : 0] pc;
 
     wire [`STATE_BITS - 1 : 0] control_word;
     wire leq;
-    wire branch;
-    wire inc;
-    wire set;
 
-    wire fetch;
-    wire deref;
+    subleq_controller ctrl(clk, areset, ack, halt, control_word);
 
-    data_in_buffer dinbuf(clk, areset, data_in, data_in_0, data_in_1, data_in_2);
-    a_register areg(clk, areset, set, data_in_1, a_value);
+    always @(posedge clk) case (control_word)
+        `FETCH_A: ptr <= data_in;
+        `FETCH_B: ptr <= data_in;
+        `FETCH_C: ptr <= data_in;
+        `DEREF_A: a <= data_in;
+        `DEREF_B: b <= data_in;
+        `BRANCH: pc <= (leq ? ptr : pc + 3);
+    endcase
 
-    subleq_controller ctrl(clk, areset, halt, control_word);
-    subleq_pc pc(clk, areset, branch, inc, data_in_0, pc_addr);
-
-    assign fetch = control_word == `FETCH_A || control_word == `FETCH_B || control_word == `FETCH_C;
-    assign deref = control_word == `DEREF_A || control_word == `DEREF_B;
-    assign load = control_word != `STORE_SUB;
+    always @(areset) if (areset) begin
+        a <= 0;
+        b <= 0;
+        ptr <= 0;
+        pc <= 0;
+    end
 
     assign addr =
         control_word == `HALT ? (1 << `WORD_SIZE) - 1 :
-        deref ? data_in_1 :
-        fetch ? pc_addr :
-        data_in_2;
+        control_word == `FETCH_A ? pc :
+        control_word == `WAIT_A ? pc :
+        control_word == `FETCH_B ? pc + 1 :
+        control_word == `WAIT_B ? pc + 1 :
+        control_word == `FETCH_C ? pc + 2 :
+        control_word == `WAIT_C ? pc + 2 :
+        control_word == `DEREF_A ? ptr :
+        control_word == `WAIT_DA ? ptr :
+        control_word == `DEREF_B ? ptr :
+        control_word == `WAIT_DB ? ptr :
+        control_word == `STORE_SUB ? ptr :
+        control_word == `WAIT_STORE ? ptr :
+        0;
 
-    assign data_out = data_in_1 - a_value;
-    assign leq = !($signed(data_in_2 - a_value) > $signed(0));
-    assign branch = control_word == `FETCH_C && leq;
-    assign inc = fetch;
-    assign set = control_word == `FETCH_B;
+    assign req =
+        control_word == `FETCH_A ||
+        control_word == `FETCH_B ||
+        control_word == `FETCH_C ||
+        control_word == `DEREF_A ||
+        control_word == `DEREF_B ||
+        control_word == `STORE_SUB;
+
+    assign load =
+        control_word == `FETCH_A ||
+        control_word == `FETCH_B ||
+        control_word == `FETCH_C ||
+        control_word == `DEREF_A ||
+        control_word == `DEREF_B ||
+        control_word == `WAIT_A ||
+        control_word == `WAIT_B ||
+        control_word == `WAIT_C ||
+        control_word == `WAIT_DA ||
+        control_word == `WAIT_DB;
+    assign store =
+        control_word == `STORE_SUB ||
+        control_word == `WAIT_STORE;
+
+    assign data_out = b - a;
+    assign leq = data_out <= 0;
 endmodule

@@ -1,13 +1,14 @@
 `include "defines.vh"
 
 module memory(
-    input clk,
     input areset,
 
+    output ack,
+    input req,
     input load,
     input store,
-    output [`WORD_SIZE - 1 : 0] mem_out,
-    input [`WORD_SIZE - 1 : 0] mem_in,
+    output [`WORD_SIZE - 1 : 0] out,
+    input [`WORD_SIZE - 1 : 0] in,
     input [`WORD_SIZE - 1 : 0] addr
 );
     reg [`WORD_SIZE - 1 : 0] buffer[(1 << `WORD_SIZE) - 1 : 0];
@@ -34,7 +35,8 @@ module memory(
 
     initial reload_memory;
     always @(posedge areset) reload_memory;
-    always @(posedge clk) if (store) buffer[addr] <= mem_in;
+    always @(*) if (req && store) buffer[addr] <= in;
 
-    assign mem_out = load ? buffer[addr] : 0;
+    assign ack = req;
+    assign out = req && load ? buffer[addr] : 0;
 endmodule

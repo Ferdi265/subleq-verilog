@@ -10,15 +10,6 @@ module memory(
     input [`WORD_SIZE - 1 : 0] mem_in,
     input [`WORD_SIZE - 1 : 0] addr
 );
-    wire clk;
-    wire areset;
-
-    wire load;
-    wire store;
-    wire [`WORD_SIZE - 1 : 0] mem_out;
-    wire [`WORD_SIZE - 1 : 0] mem_in;
-    wire [`WORD_SIZE - 1 : 0] addr;
-
     reg [`WORD_SIZE - 1 : 0] buffer[(1 << `WORD_SIZE) - 1 : 0];
 
     integer i;

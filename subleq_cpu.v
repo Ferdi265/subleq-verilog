@@ -10,15 +10,6 @@ module subleq_cpu(
     output [`WORD_SIZE - 1 : 0] data_out,
     output [`WORD_SIZE - 1 : 0] addr
 );
-    wire clk;
-    wire areset;
-
-    wire halt;
-    wire load;
-    wire [`WORD_SIZE - 1 : 0] data_in;
-    wire [`WORD_SIZE - 1 : 0] data_out;
-    wire [`WORD_SIZE - 1 : 0] addr;
-
     wire [`WORD_SIZE - 1 : 0] data_in_0;
     wire [`WORD_SIZE - 1 : 0] data_in_1;
     wire [`WORD_SIZE - 1 : 0] data_in_2;

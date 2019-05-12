@@ -17,22 +17,6 @@ module mmio(
     output [`WORD_SIZE - 1 : 0] mem_in,
     output [`WORD_SIZE - 1 : 0] addr_out
 );
-    wire eof;
-    wire in_read;
-    wire out_write;
-    wire [`WORD_SIZE - 1 : 0] io_in;
-    wire [`WORD_SIZE - 1 : 0] io_out;
-
-    wire halt;
-    wire load;
-    wire [`WORD_SIZE - 1 : 0] data_in;
-    wire [`WORD_SIZE - 1 : 0] data_out;
-    wire [`WORD_SIZE - 1 : 0] addr;
-
-    wire [`WORD_SIZE - 1 : 0] mem_out;
-    wire [`WORD_SIZE - 1 : 0] mem_in;
-    wire [`WORD_SIZE - 1 : 0] addr_out;
-
     wire addr_io;
     wire addr_io_read;
     wire addr_io_write;

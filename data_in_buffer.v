@@ -9,14 +9,6 @@ module data_in_buffer(
     output [`WORD_SIZE - 1 : 0] data_in_1,
     output [`WORD_SIZE - 1 : 0] data_in_2
 );
-    wire clk;
-    wire areset;
-
-    wire [`WORD_SIZE - 1 : 0] data_in;
-    wire [`WORD_SIZE - 1 : 0] data_in_0;
-    wire [`WORD_SIZE - 1 : 0] data_in_1;
-    wire [`WORD_SIZE - 1 : 0] data_in_2;
-
     reg [`WORD_SIZE - 1 : 0] data_buf_1;
     reg [`WORD_SIZE - 1 : 0] data_buf_2;
 

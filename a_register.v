@@ -8,13 +8,6 @@ module a_register(
     input [`WORD_SIZE - 1 : 0] in,
     output [`WORD_SIZE - 1 : 0] out
 );
-    wire clk;
-    wire areset;
-
-    wire set;
-    wire [`WORD_SIZE - 1 : 0] in;
-    wire [`WORD_SIZE - 1 : 0] out;
-
     reg [`WORD_SIZE - 1 : 0] a;
 
     always @(posedge clk) if (set) a <= in;

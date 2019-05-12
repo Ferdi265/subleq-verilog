@@ -7,12 +7,6 @@ module subleq_controller(
     input halt,
     output [`STATE_BITS - 1 : 0] control_word
 );
-    wire clk;
-    wire areset;
-
-    wire halt;
-    wire [`STATE_BITS - 1 : 0] control_word;
-
     reg [`STATE_BITS - 1 : 0] state;
     wire [`STATE_BITS - 1 : 0] next_state;
 

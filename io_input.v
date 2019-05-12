@@ -4,17 +4,10 @@ module io_input(
     input clk,
     input areset,
 
-    output eof,
+    output reg eof,
     input in_read,
     output [`WORD_SIZE - 1 : 0] io_in
 );
-    wire clk;
-    wire areset;
-
-    reg eof;
-    wire in_read;
-    wire [`WORD_SIZE - 1 : 0] io_in;
-
     reg [7 : 0] byte;
     integer fd;
     integer ret;

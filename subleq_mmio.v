@@ -28,8 +28,9 @@ module subleq_mmio(
     output [`WORD_SIZE - 1 : 0] mem_addr
 );
     wire addr_io;
-    wire addr_io_read;
+    wire addr_io_halt;
     wire addr_io_write;
+    wire addr_io_read;
 
     // ADDR CASES
     assign addr_io = addr >= ((1 << `WORD_SIZE) - 3);
@@ -38,10 +39,12 @@ module subleq_mmio(
     assign addr_io_read = addr == ((1 << `WORD_SIZE) - 3);
 
     // INPUT
+    wire in_read;
     assign in_read = addr_io_read && cpu_load;
     assign in_req = in_read ? cpu_req : 0;
 
     // OUTPUT
+    wire out_write;
     assign out_write = addr_io_write && cpu_store;
     assign out_req = out_write ? cpu_req : 0;
     assign io_out = out_write ? data_out : 0;

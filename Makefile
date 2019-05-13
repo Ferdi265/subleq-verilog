@@ -2,7 +2,7 @@ SOURCES = $(wildcard *.v)
 TARGET = $(shell basename `realpath .`)
 
 $(TARGET): $(SOURCES)
-	iverilog -o $@ $^
+	iverilog -Wall -o $@ $^
 
 .PHONY: clean
 clean:

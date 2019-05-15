@@ -74,6 +74,7 @@ module subleq_cpu(
         control_word == `WAIT_C ||
         control_word == `WAIT_DA ||
         control_word == `WAIT_DB;
+
     assign store =
         control_word == `STORE_SUB ||
         control_word == `WAIT_STORE;

@@ -33,7 +33,7 @@ This single instruction is sufficient to implement arbitrary programs.
 
 The CPU in this repository implements a variant of
 SUBLEQ using Two's Complement arithmetic with word-addressed memory and
-configurable word-size. (default is 16-bits)
+configurable word-size. (default is 16 bits)
 
 Each SUBLEQ instruction is 3 consecutive possibly unaligned memory words.
 Execution starts at address `0`.

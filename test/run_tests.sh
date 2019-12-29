@@ -9,7 +9,7 @@ for f in *.py; do
     [[ $f == "test_v.py" ]] && continue
 
     echo ">> ${f/.py/}: "
-    python $f
+    python3 $f
     if [[ $? -eq 0 ]]; then
         color 1 32
         echo ">> PASS"

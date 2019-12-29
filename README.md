@@ -74,6 +74,9 @@ The test bench accepts a few options via "plusargs":
 - `+debug`: print internal debug information every cycle, including a dump of
   the first 128 words of memory (edit `test_subleq.v` to change the dump window)
 
+Run `make` to build the test bench and run `./subleq [+options...]` to run the
+simulator on the test bench.
+
 ## Test Suite
 
 The [test/](test/) subdirectory contains a test suite for the Verilog

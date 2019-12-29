@@ -5,6 +5,7 @@ color() {
 }
 
 for f in *.py; do
+    [[ $f == "test_hl.py" ]] && continue
     [[ $f == "test_v.py" ]] && continue
 
     echo ">> ${f/.py/}: "

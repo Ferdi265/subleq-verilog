@@ -13,7 +13,7 @@ class ToyProgramTester(LabelPreservingTester, InputTester, ExpectedOutputTester)
 
     def get_input(self):
         return self.memory
-    
+
     def check_message(self):
         super().check_message()
         print("!! status: [", end = "")
@@ -407,7 +407,7 @@ br_skip_toploop:
         MOV sub_power POWERS
         ADD sub_power brv_j
         LDI sub_power sub_power
-        
+
         ADD brr_ashr sub_power
 br_skiptop2:
 

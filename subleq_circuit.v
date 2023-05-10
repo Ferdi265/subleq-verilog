@@ -2,16 +2,17 @@
 
 module subleq_circuit(
     input clk,
-    input areset
-);
-    wire eof;
-    wire in_ack;
-    wire in_req;
-    wire out_ack;
-    wire out_req;
-    wire [`WORD_SIZE - 1 : 0] io_in;
-    wire [`WORD_SIZE - 1 : 0] io_out;
+    input areset,
 
+    input in_eof,
+    input in_ack,
+    output in_req,
+    input [`WORD_SIZE - 1 : 0] in_data,
+
+    input out_ack,
+    output out_req,
+    output [`WORD_SIZE - 1 : 0] out_data
+);
     wire mem_ack;
     wire mem_req;
     wire mem_load;
@@ -29,16 +30,6 @@ module subleq_circuit(
     wire [`WORD_SIZE - 1 : 0] data_out;
     wire [`WORD_SIZE - 1 : 0] addr;
 
-    io_input in(
-        clk, areset,
-
-        eof, in_ack, in_req, io_in
-    );
-    io_output out(
-        clk, areset,
-
-        out_ack, out_req, io_out
-    );
     memory mem(
         clk, areset,
 
@@ -54,8 +45,8 @@ module subleq_circuit(
         data_in, data_out, addr
     );
     subleq_mmio mmio(
-        eof, in_ack, in_req, io_in,
-        out_ack, out_req, io_out,
+        in_eof, in_ack, in_req, in_data,
+        out_ack, out_req, out_data,
 
         cpu_ack, cpu_req,
         cpu_halt, cpu_load, cpu_store,

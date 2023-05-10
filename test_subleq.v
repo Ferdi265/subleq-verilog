@@ -2,11 +2,33 @@
 
 module test;
     reg clk, areset;
+    wire in_eof;
+    wire in_ack;
+    wire in_req;
+    wire [`WORD_SIZE - 1 : 0] in_data;
+    wire out_ack;
+    wire out_req;
+    wire [`WORD_SIZE - 1 : 0] out_data;
 
     initial clk = 0;
     always #5 clk = !clk;
 
-    subleq_circuit subl(clk, areset);
+    io_input in(
+        clk, areset,
+
+        in_eof, in_ack, in_req, in_data
+    );
+    io_output out(
+        clk, areset,
+
+        out_ack, out_req, out_data
+    );
+    subleq_circuit subl(
+        clk, areset,
+
+        in_eof, in_ack, in_req, in_data,
+        out_ack, out_req, out_data
+    );
 
     initial begin
         areset = 1;
@@ -82,8 +104,8 @@ module test;
             $display("  DIN = %h, DOUT = %h, REQ = %h, ACK = %h", subl.cpu.data_in, subl.cpu.data_out, subl.cpu.req, subl.cpu.ack);
             $display("  load = %h, store = %h, halt = %h, leq = %h", subl.cpu.load, subl.cpu.store, subl.cpu.halt, subl.cpu.leq);
             $display("MMIO INTERNALS:");
-            $display("  input:  REQ = %h, ACK = %h, eof = %h, data = %h", subl.in.req, subl.in.ack, subl.in.eof, subl.in.data);
-            $display("  output: REQ = %h, ACK = %h, data = %h", subl.out.req, subl.out.ack, subl.out.data);
+            $display("  input:  REQ = %h, ACK = %h, eof = %h, data = %h", in.req, in.ack, in.eof, in.data);
+            $display("  output: REQ = %h, ACK = %h, data = %h", out.req, out.ack, out.data);
             $display("  memory: REQ = %h, ACK = %h, load = %h, store = %h, addr = %h, in = %h, out = %h", subl.mem.req, subl.mem.ack, subl.mem.load, subl.mem.store, subl.mem.addr, subl.mem.in, subl.mem.out);
 
             $display("MEMORY 0000 - 0080:");

@@ -17,6 +17,9 @@ class VSimAssembler(SimAssembler):
         dump = check_output([subleq_dir + "/subleq", "+autotest"], cwd = subleq_dir).decode()
         i = 0
         for line in dump.split("\n")[:-1]:
+            if "$finish" in line:
+                continue
+
             addr, entries = line.split(": ")
             for j, entry in enumerate(entries.split(" ")):
                 self.set_addr(i + j, int(entry, 16))
